@@ -12,12 +12,19 @@ import utils.Material;
  */
 public class Agente implements Runnable{
 	private Mesa mesa;
-	private static final int TEMPO_PRODUCAO = 5000;
+	private int tempoProducao;
 	
-	public Agente() { }
+	public Agente() { 
+		this.tempoProducao = 5000;
+	}
 	
-	public Agente(Mesa mesa) {
+	public Agente(Mesa mesa, int tempoProducao) {
 		this.mesa = mesa;
+		this.tempoProducao = tempoProducao * 1000;
+	}
+	
+	public void setTempoProducao(int tempo) {
+		this.tempoProducao = tempo * 1000;
 	}
 	
 	@Override
@@ -28,7 +35,7 @@ public class Agente implements Runnable{
 		while(true) {
 			try {
 				//Produz dois materiais no tempo determinado
-				Thread.sleep(TEMPO_PRODUCAO);
+				Thread.sleep(tempoProducao);
 				Material material1 = sortearMaterial();
 				Material material2 = sortearMaterial();
 				

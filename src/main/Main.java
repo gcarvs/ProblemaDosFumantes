@@ -18,6 +18,10 @@ public class Main {
 		
 		Scanner sc = new Scanner(System.in);
 		System.out.println("           <<< Bem vindo a tabacaria da GEC! >>>");
+		System.out.println("Quantos SEGUNDOS o agente leva para produzir?");
+		int tempoProducao = sc.nextInt();
+		Agente agente = new Agente(mesa, tempoProducao);
+		
 		System.out.println("Quantas pessoas vao fumar? ");
 		int numeroFumantes = sc.nextInt();
 		sc.nextLine();
@@ -32,8 +36,8 @@ public class Main {
 		
 		System.out.println("Todos os fumantes foram cadastrados! Iniciando a distribuição dos materiais... \n");
 		//Inicia a thread do agente que produz os materiais
-		Thread agente = new Thread(new Agente(mesa));
-		agente.start();
+		Thread agenteThread = new Thread(agente);
+		agenteThread.start();
 		
 		//Inicia as threads dos fumantes
 		for(Fumante fumante : listaFumantes) {
