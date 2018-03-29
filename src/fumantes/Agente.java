@@ -36,7 +36,7 @@ public class Agente implements Runnable{
 	
 	private Material sortearMaterial() {
 		Random random = new Random();
-		int codigo = random.nextInt(2);
+		int codigo = random.nextInt(3);
 		
 		return Material.getMaterial(codigo);
 	}
