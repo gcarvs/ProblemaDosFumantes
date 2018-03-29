@@ -16,6 +16,13 @@ public class Mesa {
 		materiaisDisponiveis = new ArrayList<Material>();
 	}
 	
+	/**
+	 * Monta um cigarro baseado nos materiais produzidos. Se os materiais necessários nao foram produzidos,
+	 * aguarda até uma nova producao.
+	 * 
+	 * @param fumante - O Fumante tentando fumar
+	 * @throws InterruptedException - Caso haja um erro na sincronia das threads.
+	 */
 	public synchronized void fumar(Fumante fumante) throws InterruptedException {
 		if(materiaisDisponiveis.size() != 2) {
 			//System.out.println(fumante.getNome() + " aguardando");
@@ -25,35 +32,10 @@ public class Mesa {
 			wait();
 		}
 		else {
-			if(fumante.getMaterialInicial() == Material.FOSFORO) {
-				if(materiaisDisponiveis.contains(Material.FUMO) && materiaisDisponiveis.contains(Material.PAPEL)) {
-					fumante.setEstado(EstadoFumante.FUMANDO);
-					System.out.println(fumante.getNome() + " comecou a fumar");
-					materiaisDisponiveis.clear();
-				}
-				else {
-					wait();
-				}
-			}
-			else if(fumante.getMaterialInicial() == Material.FUMO) {
-				if(materiaisDisponiveis.contains(Material.FOSFORO) && materiaisDisponiveis.contains(Material.PAPEL)) {
-					fumante.setEstado(EstadoFumante.FUMANDO);
-					System.out.println(fumante.getNome() + " comecou a fumar");
-					materiaisDisponiveis.clear();
-				}
-				else {
-					wait();
-				}
-			}
-			else if(fumante.getMaterialInicial() == Material.PAPEL) {
-				if(materiaisDisponiveis.contains(Material.FOSFORO) && materiaisDisponiveis.contains(Material.FUMO)) {
-					fumante.setEstado(EstadoFumante.FUMANDO);
-					System.out.println(fumante.getNome() + " comecou a fumar");
-					materiaisDisponiveis.clear();
-				}
-				else {
-					wait();
-				}
+			if(materiaisDisponiveis.containsAll(fumante.getMateriaisNecessarios())) {
+				fumante.setEstado(EstadoFumante.FUMANDO);
+				System.out.println(fumante.getNome() + " comecou a fumar");
+				materiaisDisponiveis.clear();
 			}
 		}
 	}
